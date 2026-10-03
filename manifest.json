@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "omarchy-rime-keyboard-layout",
+  "name": "omarchy-rime-keyboard-layout",
+  "version": "1.1.0",
+  "author": "Tom (based on Omarchy)",
+  "description": "Rime Chinese/ASCII mode, active Fcitx5 input method, and XKB keyboard layout",
+  "kinds": ["bar-widget"],
+  "entryPoints": { "barWidget": "RimeKeyboardLayout.qml" },
+  "barWidget": {
+    "displayName": "omarchy-rime-keyboard-layout",
+    "description": "Active Rime mode or Fcitx5 input method, with XKB layout as fallback",
+    "category": "Compositor",
+    "allowMultiple": false,
+    "defaults": { "pollInterval": 750, "rimeChineseLabel": "中", "rimeEnglishLabel": "EN" },
+    "schema": [
+      { "key": "pollInterval", "type": "integer", "label": "Fcitx5/Rime poll interval (ms)", "min": 250, "max": 10000, "step": 250, "defaultValue": 750 },
+      { "key": "rimeChineseLabel", "type": "string", "label": "Rime Chinese-mode label", "defaultValue": "中" },
+      { "key": "rimeEnglishLabel", "type": "string", "label": "Rime ASCII-mode label", "defaultValue": "EN" }
+    ]
+  }
+}

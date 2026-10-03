@@ -1,0 +1,38 @@
+// omarchy-rime-keyboard-layout: label priority and XKB keyboard selection tests.
+const assert = require('node:assert/strict');
+const input = require('../InputStateModel.js');
+const keyboard = require('../KeyboardLayoutModel.js');
+
+assert.equal(input.displayLabel({state: 0}, 'EN'), 'EN');
+assert.equal(input.displayLabel({state: 1, id: 'rime', label: 'ㄓ'}, 'EN'), 'EN');
+assert.equal(input.displayLabel({state: 2, id: 'rime', label: 'ㄓ'}, 'EN'), 'ㄓ');
+assert.equal(input.displayLabel({state: 2, id: 'rime', label: 'ㄓ'}, 'EN', {rime: 'Rime'}), 'Rime');
+assert.equal(input.displayLabel({state: 2, id: 'pinyin', name: '拼音'}, 'EN'), '拼音');
+assert.equal(input.displayLabel({state: 2, id: 'keyboard-us', language: 'en'}, 'DE'), 'EN');
+assert.equal(input.displayLabel({state: 2, id: 'keyboard-de'}, 'EN'), 'DE');
+assert.equal(input.displayLabel({state: 2}, 'EN'), 'IM');
+assert.equal(input.displayLabel({state: 99}, 'EN'), 'EN');
+assert.equal(input.displayLabel(null, 'EN'), 'EN');
+assert.equal(input.displayLabel({state: '2', label: 'あ'}, 'EN'), 'あ');
+assert.equal(input.displayLabel({state: 2, id: 'constructor', name: 'Test'}, 'EN', {}), 'Tes');
+assert.equal(input.displayLabel({state: 2, id: 'rime', label: 'ㄓ'}, 'EN', {rime: ''}), 'ㄓ');
+assert.equal(input.displayLabel({state: 0}, ''), '');
+assert.equal(input.displayLabel({state: 2, id: 'rime', asciiMode: false}, 'EN'), '中');
+assert.equal(input.displayLabel({state: 2, id: 'rime', asciiMode: true}, 'DE'), 'EN');
+assert.equal(input.displayLabel({state: 2, id: 'rime', asciiMode: true}, 'DE', {rime: 'Rime'}), 'EN');
+assert.equal(input.displayLabel({state: 2, id: 'rime', asciiMode: false}, 'EN', {}, '汉', 'A'), '汉');
+assert.equal(input.displayLabel({state: 2, id: 'rime', asciiMode: true}, 'EN', {}, '汉', 'A'), 'A');
+assert.equal(input.displayLabel({state: 2, id: 'rime', asciiMode: null, label: 'ㄓ'}, 'EN'), 'ㄓ');
+assert.equal(input.displayLabel({state: 2, id: 'rime', asciiMode: 'false', label: 'ㄓ'}, 'EN'), 'ㄓ');
+assert.equal(input.displayLabel({state: 1, id: 'rime', asciiMode: false}, 'DE'), 'DE');
+assert.equal(input.displayLabel({state: 0, id: 'rime', asciiMode: true}, 'DE'), 'DE');
+assert.equal(input.displayLabel({state: 2, id: 'pinyin', asciiMode: true, label: '拼'}, 'EN'), '拼');
+assert.equal(keyboard.shortLabel('English (US)', {'English (US)': 'en'}), 'EN');
+assert.equal(keyboard.isTypedKeyboard('hl-virtual-keyboard-fcitx5'), false);
+assert.equal(keyboard.isTypedKeyboard('power-button'), false);
+assert.equal(keyboard.isTypedKeyboard('keyd-virtual-keyboard'), true);
+const a = {name: 'usb-keyboard', active_layout_index: 0};
+const b = {name: 'at-translated-set-2-keyboard', active_layout_index: 1};
+assert.equal(keyboard.selectKeyboard([a, b], ''), b);
+assert.equal(keyboard.selectKeyboard([a, b], a.name), a);
+console.log('model tests passed');
